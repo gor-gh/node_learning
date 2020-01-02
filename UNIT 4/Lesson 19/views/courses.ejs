@@ -1,0 +1,17 @@
+<div class="courses_body">
+	<div class="content">
+		<div class="left_side">
+			<img src="../public/images/cake.jpg">
+		</div>
+		<div class="right_side">
+			<div class="higher_text">
+				Learn to cook cutting edge <br> food
+			</div>
+			<h1 class="our_courses">Our courses</h1>
+			<% offeredCourses.forEach(course => { %>
+				<h6 class="course_title"> <%= course.title %> </h5>
+				<p> <%= course.cost %> $ </p>
+			<% }); %>
+		</div>
+	</div>
+</div>
