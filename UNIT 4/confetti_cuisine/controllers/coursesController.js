@@ -46,6 +46,57 @@ module.exports = {
     show: (req, res, next) => {
         let courseId = req.params.id;
         Course.findById(courseId)
-            .then(course => )
+            .then(course => {
+                res.locals.course = course;
+                console.log(course);
+                next();
+            })
+            .catch(err => {
+                console.log(`Error while fetching course by id : ${err.message}`);
+                next(err);
+            })
+    },
+    showView: (req, res) => {
+        res.render('courses/show');
+    },
+    edit: (req, res, next) => {
+        let courseId = req.params.id;
+        Course.findById(courseId)
+            .then(course => {
+                res.locals.course = course;
+                res.render('courses/edit');
+            })
+            .catch(err => {
+                console.log(`Error while finding course: ${err.message}`);
+                next(err);
+            })
+    },
+    update: (req, res, next) => {
+        let courseId = req.params.id,
+            courseParams = getCourseParams(req.body);
+        Course.findByIdAndUpdate(courseId, {
+            $set: courseParams
+        })
+            .then(course => {
+                res.locals.redirect = `/courses/${course._id}`;
+                res.locals.course = course;
+                next();
+            })
+            .catch(err => {
+                console.log(`Error while updating course info: ${err.message}`);
+                next(err);
+            })
+    },
+    delete: (req, res, next) => {
+        let courseId = req.params.id;
+        Course.findByIdAndRemove(courseId)
+            .then(() => {
+                res.locals.redirect = '/courses';
+                next();
+            })
+            .catch(err => {
+                console.log(`Error while deleting course: ${err.message}`);
+                next(err);
+            })
     }
 }
